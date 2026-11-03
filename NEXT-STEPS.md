@@ -9,7 +9,7 @@ Elastic recruiter Laura Butler asked on 2026-11-03 to book a 30-minute screen fo
 ## Status
 
 - [x] Project scaffold committed: `fetch-articles.mjs`, `load.mjs`, `create-mcp-key.mjs`, `connect.sh`, `.env.example`, `README.md`.
-- [x] Article download started 2026-11-03 (`node fetch-articles.mjs`, log in `data-fetch.log`). It is resumable: rerun it if it stopped, then check the final line for `listed` vs `inFile`.
+- [x] Articles downloaded 2026-11-03: 488 listed, 488 in `data/articles.jsonl` (9.5M, no empty bodies, published 2026-01-06 to 2026-11-02). Rerun `node fetch-articles.mjs` to add newer posts; it skips ones already saved.
 - [ ] **You:** sign up for the Elastic Cloud trial (https://www.elastic.co/cloud/trial, 14 days) and create a **Serverless Elasticsearch** project.
 - [ ] **You:** copy the Elasticsearch URL, the Kibana URL, and an admin API key (Kibana → Stack Management → API keys) into `.env` (template: `.env.example`), or paste them to Claude.
 - [ ] `node --env-file=.env load.mjs` — creates `devto-articles` and loads every article; check `bulkErrors` is 0 and `indexed` equals `input`.
