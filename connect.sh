@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
-# connect.sh: registers the Elastic Agent Builder MCP endpoint with Claude Code
-# and Gemini CLI, through mcp-remote as in Elastic's client example.
+# connect.sh: registers the Elastic Agent Builder MCP endpoint (streamable HTTP)
+# with Claude Code and the Antigravity CLI (agy, the successor to Gemini CLI).
+# Both registrations live outside the repo (Claude local scope, agy user config)
+# because they carry the MCP API key.
 # Needs KIBANA_URL and MCP_API_KEY in .env.
 set -euo pipefail
 cd "$(dirname "$0")"
 set -a; source .env; set +a
-: "${KIBANA_URL:?set KIBANA_URL in .env}" "${MCP_API_KEY:?run create-mcp-key.mjs first}"
+: "${KIBANA_URL:?set KIBANA_URL in .env}" "${MCP_API_KEY:?create the MCP key first (see README)}"
 
 ENDPOINT="${KIBANA_URL%/}/api/agent_builder/mcp"
+AUTH="Authorization: ApiKey ${MCP_API_KEY}"
 
-claude mcp remove elastic -s project >/dev/null 2>&1 || true
-claude mcp add elastic -s project -- npx -y mcp-remote "$ENDPOINT" --header "Authorization: ApiKey ${MCP_API_KEY}"
+claude mcp remove elastic -s local >/dev/null 2>&1 || true
+claude mcp add --transport http -s local elastic "$ENDPOINT" --header "$AUTH"
 echo "Claude Code: registered 'elastic' -> $ENDPOINT"
 
-gemini mcp remove elastic >/dev/null 2>&1 || true
-gemini mcp add elastic npx -y mcp-remote "$ENDPOINT" --header "Authorization: ApiKey ${MCP_API_KEY}" \
-  && echo "Gemini CLI: registered 'elastic'" \
-  || echo "Gemini CLI: 'gemini mcp add' failed; add the same command to .gemini/settings.json by hand"
+AGY=$(command -v agy || command -v gemini)
+"$AGY" mcp remove elastic >/dev/null 2>&1 || true
+"$AGY" mcp add --header "$AUTH" elastic "$ENDPOINT"
+echo "$(basename "$AGY"): registered 'elastic' -> $ENDPOINT"

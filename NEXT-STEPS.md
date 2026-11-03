@@ -8,23 +8,25 @@ Elastic recruiter Laura Butler asked on 2026-11-03 to book a 30-minute screen fo
 
 ## Status
 
-- [x] Project scaffold committed: `fetch-articles.mjs`, `load.mjs`, `create-mcp-key.mjs`, `connect.sh`, `.env.example`, `README.md`.
-- [x] Articles downloaded 2026-11-03: 488 listed, 488 in `data/articles.jsonl` (9.5M, no empty bodies, published 2026-01-06 to 2026-11-02). Rerun `node fetch-articles.mjs` to add newer posts; it skips ones already saved.
-- [ ] **You:** sign up for the Elastic Cloud trial (https://www.elastic.co/cloud/trial, 14 days) and create a **Serverless Elasticsearch** project.
-- [ ] **You:** copy the Elasticsearch URL, the Kibana URL, and an admin API key (Kibana → Stack Management → API keys) into `.env` (template: `.env.example`), or paste them to Claude.
-- [ ] `node --env-file=.env load.mjs` — creates `devto-articles` and loads every article; check `bulkErrors` is 0 and `indexed` equals `input`.
-- [ ] `node --env-file=.env create-mcp-key.mjs >> .env` — 7-day key, read on the index plus `feature_agentBuilder.read`.
-- [ ] `./connect.sh` — registers `elastic` in Claude Code (project scope) and Gemini CLI.
-- [ ] Run the demo questions (below) in both clients; record what each one returns.
+- [x] Project scaffold committed.
+- [x] Articles downloaded 2026-11-03: 488 in `data/articles.jsonl` (published 2026-01-06 to 2026-11-02). Rerun `node fetch-articles.mjs` to add newer posts.
+- [x] Elastic Cloud trial (14 days from 2026-11-03), Serverless Elasticsearch project "My Elasticsearch project", GCP us-central1. Endpoints in `.env`.
+- [x] Admin key `elastic-demo-setup` (expires 2026-11-17).
+- [x] `load.mjs`: `{"input":488,"bulkErrors":0,"indexed":488}`. `semantic_text` defaulted to `.jina-embeddings-v5-text-small` (1024 dims).
+- [x] MCP key `elastic-demo-mcp` (expires 2026-11-10), made in Kibana UI. Role descriptor in README. Writes to the index return 403.
+- [x] `./connect.sh`: `elastic` connected in Claude Code (local scope) and agy.
+- [x] `./ask.sh` ran all four questions in both clients; transcripts in `results/`, digest via `python3 summarize.py [--answers]`.
 - [ ] Write it up for dev.to (house style: `~/.claude/CLAUDE.md`, "Writing articles"; publishing skill).
 - [ ] Mention the published demo in the Elastic recruiter call.
 
-## Untested (verify on first run, fix in code, note in the commit message)
+## Findings from the run (verified 2026-11-03)
 
-- `semantic_text` with no `inference_id` uses the project's default inference endpoint.
-- The Kibana privilege name `feature_agentBuilder.read` on application `kibana-.kibana` (from Elastic's MCP API-key doc example).
-- Which Agent Builder tools the MCP endpoint exposes, and whether the default tools can search a custom index.
-- The `claude mcp add ... -- npx -y mcp-remote <endpoint> --header ...` and `gemini mcp add` command lines in `connect.sh`.
+- The MCP endpoint lists 22 tools. Both clients used `platform_core_execute_esql` for nearly everything; `platform_core_search` alone needs `monitor_inference` and `feature_actions.read` on the key.
+- An API key cannot create a key with privileges (`creating derived api keys requires an explicit role descriptor that is empty`), so the narrow key comes from Kibana or a user login.
+- `gemini` on this machine is a wrapper around `agy` (Antigravity CLI). `agy` accepts HTTP MCP servers with `--header`, no `mcp-remote` needed.
+- Wall time per question: Claude Code 23–90 s, agy 138–410 s. agy q1 ended with "The stream was interrupted" but still returned an answer.
+- Claude Code q1 used Bash three times to parse a large ES|QL result locally, despite the "only the elastic tools" preamble.
+- Q4 (CPU vs L4): both found the same two EmbeddingGemma 2 posts. Q2/Q3 lists differ because each client chose a different filter (Claude: title match only, 45 posts for q2; agy: title, description, tags, then body, 54 posts). Check the filter, not just the count.
 
 ## Demo questions
 

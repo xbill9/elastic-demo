@@ -2,7 +2,10 @@
 /**
  * create-mcp-key.mjs: creates a narrow API key for the Agent Builder MCP
  * endpoint: read-only on the demo index plus the Agent Builder Kibana
- * privilege. Without that privilege the MCP endpoint returns 403.
+ * privilege, plus monitor_inference and feature_actions.read, which
+ * platform_core_search needs. Elasticsearch refuses this call when ES_API_KEY
+ * is itself an API key (derived keys cannot carry privileges); create the key
+ * in Kibana instead (see README), or authenticate as a user.
  *
  * Writes MCP_API_KEY to stdout; put it in .env.
  * Usage: node --env-file=.env create-mcp-key.mjs [--days 7]
@@ -20,8 +23,9 @@ const res = await fetch(`${ES_URL}/_security/api_key`, {
     expiration: `${DAYS}d`,
     role_descriptors: {
       mcp_reader: {
+        cluster: ['monitor_inference'],
         indices: [{ names: [INDEX], privileges: ['read', 'view_index_metadata'] }],
-        applications: [{ application: 'kibana-.kibana', privileges: ['feature_agentBuilder.read'], resources: ['*'] }],
+        applications: [{ application: 'kibana-.kibana', privileges: ['feature_agentBuilder.read', 'feature_actions.read'], resources: ['*'] }],
       },
     },
   }),
