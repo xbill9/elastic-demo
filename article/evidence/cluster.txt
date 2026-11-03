@@ -1,0 +1,8 @@
+$ curl -s -H "Authorization: ApiKey $ES_API_KEY" "$ES_URL"
+{
+  "name": "serverless",
+  "version": {
+    "number": "9.7.0",
+    "build_flavor": "serverless"
+  }
+}

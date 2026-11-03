@@ -1,0 +1,28 @@
+$ curl -s -H "Authorization: ApiKey $ES_API_KEY" "$ES_URL/devto-articles/_mapping"  (semantic fields)
+{
+  "body_semantic": {
+    "type": "semantic_text",
+    "inference_id": ".jina-embeddings-v5-text-small",
+    "model_settings": {
+      "service": "elastic",
+      "task_type": "text_embedding",
+      "dimensions": 1024,
+      "similarity": "cosine",
+      "element_type": "float"
+    }
+  },
+  "title_semantic": {
+    "type": "semantic_text",
+    "inference_id": ".jina-embeddings-v5-text-small",
+    "model_settings": {
+      "service": "elastic",
+      "task_type": "text_embedding",
+      "dimensions": 1024,
+      "similarity": "cosine",
+      "element_type": "float"
+    }
+  }
+}
+
+$ curl ... /devto-articles/_count
+488

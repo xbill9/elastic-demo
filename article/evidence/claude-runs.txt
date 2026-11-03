@@ -1,0 +1,5 @@
+Claude Code runs, from the result event of results/claude-q<N>.jsonl
+q1 model=claude-opus-5-5 seconds=58 turns=9 cost_usd=0.63
+q2 model=claude-opus-5-5 seconds=49 turns=5 cost_usd=0.54
+q3 model=claude-opus-5-5 seconds=90 turns=7 cost_usd=0.63
+q4 model=claude-opus-5-5 seconds=23 turns=5 cost_usd=0.35

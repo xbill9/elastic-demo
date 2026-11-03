@@ -1,0 +1,3 @@
+$ node --env-file=.env load.mjs
+created index devto-articles
+{"index":"devto-articles","input":488,"bulkErrors":0,"indexed":488}

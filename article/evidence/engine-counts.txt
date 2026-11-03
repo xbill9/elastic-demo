@@ -1,0 +1,12 @@
+$ ES|QL: FROM devto-articles | WHERE TO_LOWER(title) LIKE "*mcp*" AND TO_LOWER(title) LIKE "*cloud run*" | STATS posts = COUNT(*)
+['posts'] [[45]]
+$ ES|QL: FROM devto-articles | WHERE MATCH(body, "MCP") AND MATCH_PHRASE(body, "Cloud Run") | STATS posts = COUNT(*)
+['posts'] [[162]]
+$ ES|QL: FROM devto-articles | WHERE title LIKE "*A2A*" OR title LIKE "*Agent2Agent*" | EVAL codelab = body LIKE "*codelabs.developers.google.com*" | STATS posts = COUNT(*), with_codelab = COUNT(CASE(codelab, 1, null))
+['posts', 'with_codelab'] [[45, 30]]
+$ ES|QL: FROM devto-articles | WHERE MATCH(title, "A2A") OR MATCH(description, "A2A") OR MATCH(body, "A2A") OR tags == "a2a" | STATS posts = COUNT(*)
+['posts'] [[63]]
+$ ES|QL: FROM devto-articles | WHERE body LIKE "*codelabs.developers.google.com*" | STATS posts = COUNT(*), titles = COUNT_DISTINCT(title)
+['posts', 'titles'] [[91, 69]]
+$ ES|QL: FROM devto-articles | STATS posts = COUNT(*), titles = COUNT_DISTINCT(title), oldest = MIN(published_at), newest = MAX(published_at)
+['posts', 'titles', 'oldest', 'newest'] [[488, 427, '2026-01-06T03:03:18.000Z', '2026-11-02T21:32:30.000Z']]

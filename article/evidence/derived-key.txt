@@ -1,0 +1,2 @@
+$ node --env-file=.env create-mcp-key.mjs   (ES_API_KEY is an API key)
+Error: 400 {"error":{"root_cause":[{"type":"illegal_argument_exception","reason":"creating derived api keys requires an explicit role descriptor that is empty (has no privileges)"}],"type":"illegal_argument_exception","reason":"creating derived api keys requires an explicit role descriptor that is empty (has no privileges)"},"status":400}

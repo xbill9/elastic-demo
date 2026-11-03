@@ -1,0 +1,24 @@
+$ tools/list on $KIBANA_URL/api/agent_builder/mcp (MCP key)
+22 tools
+  platform_core_list_inference_endpoints
+  platform_context_engine_install_automation_template
+  platform_workflows_validate_workflow
+  platform_workflows_get_workflow
+  platform_workflows_get_step_definitions
+  platform_workflows_get_trigger_definitions
+  platform_workflows_get_connectors
+  platform_workflows_get_examples
+  platform_workflows_workflow_execute_step
+  platform_core_get_workflow_execution_status
+  platform_core_resume_workflow_execution
+  platform_core_list_workflow_executions
+  platform_core_generate_workflow
+  platform_core_execute_workflow
+  platform_core_search
+  platform_core_get_document_by_id
+  platform_core_execute_esql
+  platform_core_generate_esql
+  platform_core_get_index_mapping
+  platform_core_list_indices
+  platform_core_index_explorer
+  platform_core_product_documentation

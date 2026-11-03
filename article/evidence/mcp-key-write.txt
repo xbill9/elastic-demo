@@ -1,0 +1,2 @@
+$ curl -X POST -H "Authorization: ApiKey $MCP_API_KEY" "$ES_URL/devto-articles/_doc" -d {"title":"x"}
+{"error":{"root_cause":[{"type":"security_exception","reason":"action [indices:data/write/index] is unauthorized for API key id [q8A5oqEB8jFI98E9FeXL] of user [3880204057] on indices [devto-articles], this action is granted by the index privileges [create_doc,create,index,write,all]"}],"type":"secur

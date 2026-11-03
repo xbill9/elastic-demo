@@ -1,0 +1,9 @@
+Captured 2026-11-03 from the MCP endpoint, tools/call platform_core_search, with the
+MCP key holding only read + view_index_metadata on devto-articles and
+feature_agentBuilder.read. Output saved verbatim (escapes as returned):
+
+Failed to retrieve connectors and inference endpoints: Error: Unauthorized to get actions, ResponseError: security_exception\n\tRoot causes:\n\t\tsecurity_exception: action [cluster:monitor/xpack/inference/get] is unauthorized for API key id [q8A5oqEB8jFI98E9FeXL] of user [3880204057], this action is granted by the cluster privileges [monitor_inference,manage_inference,monitor,manage,all]
+
+After adding cluster monitor_inference and feature_actions.read to the same key,
+the same call returned a resource_list whose first hit was
+"Gemma 4 on a Tesla T4: QAT Weights Decode 1.79x Faster Than bf16".

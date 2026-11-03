@@ -1,0 +1,5 @@
+$ semantic query on body_semantic: "Gemma 4 on a Tesla T4", top 3 titles
+took_ms 172
+- Gemma 4 on a Tesla T4, Part 2: The Minimum GCE VM and a Script to Drive It
+- Gemma 4 on a Tesla T4: QAT Weights Decode 1.79x Faster Than bf16
+- Gemma 4 on a Tesla T4, Part 3: Int4 Embeddings Serve E2B in 2.86 GiB at 2.30x bf16
