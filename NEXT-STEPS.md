@@ -16,7 +16,7 @@ Elastic recruiter Laura Butler asked on 2026-11-03 to book a 30-minute screen fo
 - [x] MCP key `elastic-demo-mcp` (expires 2026-11-10), made in Kibana UI. Role descriptor in README. Writes to the index return 403.
 - [x] `./connect.sh`: `elastic` connected in Claude Code (local scope) and agy.
 - [x] `./ask.sh` ran all four questions in both clients; transcripts in `results/`, digest via `python3 summarize.py [--answers]`.
-- [ ] Write it up for dev.to (house style: `~/.claude/CLAUDE.md`, "Writing articles"; publishing skill).
+- [x] dev.to draft 4970752 created 2026-11-03 (unpublished, no org): `article/devto-elastic-agent-builder-mcp.md`. Publish with `publish-devto.py --publish 4970752`.
 - [ ] Mention the published demo in the Elastic recruiter call.
 
 ## Findings from the run (verified 2026-11-03)
