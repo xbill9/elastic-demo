@@ -4,7 +4,7 @@
 # transcript (tool calls included) to results/<client>-q<N>.jsonl.
 # Usage: ./ask.sh [claude|agy]   (default: both)
 set -uo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 mkdir -p results
 
 PREAMBLE="Answer only from the 'elastic' MCP tools. My dev.to articles are in the Elasticsearch index devto-articles (fields: title, description, body, url, published_at, tags). Cite each article by title and url."

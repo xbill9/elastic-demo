@@ -6,7 +6,10 @@
 # Needs KIBANA_URL and MCP_API_KEY in .env.
 set -euo pipefail
 cd "$(dirname "$0")"
-set -a; source .env; set +a
+set -a
+# shellcheck source=/dev/null
+source .env
+set +a
 : "${KIBANA_URL:?set KIBANA_URL in .env}" "${MCP_API_KEY:?create the MCP key first (see README)}"
 
 ENDPOINT="${KIBANA_URL%/}/api/agent_builder/mcp"

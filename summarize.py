@@ -4,13 +4,18 @@ per client and question: wall time, MCP tool calls (with the query each one
 sent), non-MCP tool calls, whether the run ended in an error, and the answer.
 Usage: python3 summarize.py [--answers]
 """
-import json, sys, glob, re, collections
+import collections
+import glob
+import json
+import sys
 
 show = '--answers' in sys.argv
 
 def claude(path):
     calls, other, res = [], collections.Counter(), {}
-    for l in open(path):
+    with open(path) as fh:
+        lines = fh.readlines()
+    for l in lines:
         try: d = json.loads(l)
         except ValueError: continue
         if d.get('type') == 'assistant':
@@ -21,12 +26,14 @@ def claude(path):
                     else:
                         other[c['name']] += 1
         if d.get('type') == 'result': res = d
-    return dict(seconds=res.get('duration_ms', 0) / 1000, error=res.get('is_error'),
-                calls=calls, other=other, answer=res.get('result', ''))
+    return {'seconds': res.get('duration_ms', 0) / 1000, 'error': res.get('is_error'),
+            'calls': calls, 'other': other, 'answer': res.get('result', '')}
 
 def agy(path):
     calls, other, final, seen = [], collections.Counter(), {}, set()
-    for l in open(path):
+    with open(path) as fh:
+        lines = fh.readlines()
+    for l in lines:
         try: d = json.loads(l)
         except ValueError: continue
         if d.get('event') == 'result': final = d['result']
@@ -40,9 +47,9 @@ def agy(path):
             calls.append((params.get('ToolName'), params.get('Arguments', {})))
         else:
             other[su.get('tool_name')] += 1
-    return dict(seconds=final.get('duration_seconds', 0),
-                error=final.get('status') != 'SUCCESS' and (final.get('error') or final.get('status')),
-                calls=calls, other=other, answer=final.get('response', ''))
+    return {'seconds': final.get('duration_seconds', 0),
+            'error': final.get('status') != 'SUCCESS' and (final.get('error') or final.get('status')),
+            'calls': calls, 'other': other, 'answer': final.get('response', '')}
 
 for path in sorted(glob.glob('results/*-q*.jsonl')):
     client = path.split('/')[1].split('-q')[0]

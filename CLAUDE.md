@@ -6,6 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - No `package.json`, no dependencies. Node 20+ scripts run as `node --env-file=.env <script>.mjs`; shell scripts source `.env` themselves.
 - `node fetch-articles.mjs` needs no credentials and skips articles already in `data/articles.jsonl`. `load.mjs --recreate` drops and rebuilds the index.
+- `./lint.sh` runs shellcheck, ruff (your global rule set) and `node --check`; run it after editing scripts.
 - `./ask.sh [claude|agy]` asks the four demo questions; transcripts land in `results/<client>-q<N>.jsonl`. `python3 summarize.py [--answers]` prints every MCP query each client sent. Antigravity takes 2 to 7 minutes per question, so run it in the background.
 
 ## Keys and the public repo
